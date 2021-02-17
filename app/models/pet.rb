@@ -19,9 +19,9 @@ class Pet < ApplicationRecord
     where("lower(name) like ?", "%#{name.downcase}%")
   end
 
-  def update_status
-    if adoptable == true
-      self.update(adoptable: false)
-    end
+  def adoptable?
+    return true if applications.where(application_status: "Approved").count >= 1
+
+    self.update(adoptable: false)
   end
 end
