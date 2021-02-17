@@ -1,0 +1,8 @@
+<h1>All Shelters</h1>
+<% @shelters.each do |shelter| %>
+  <h4><%= shelter.name %></h4>
+  <h4><%= shelter.address %></h4>
+  <h4><%= shelter.city %></h4>
+  <h4><%= shelter.state %></h4>
+  <h4><%= shelter.zip %></h4>
+<% end %>
