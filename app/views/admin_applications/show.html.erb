@@ -9,9 +9,12 @@
   <section id="pet-<%= pet_application.pet.id%>">
     <h4>Pet:<%= pet_application.pet.name %></h4>
     <% if pet_application.approved? %>
-    <p>Pet Approved</p>
-    <% else %>
-    <%= button_to "Approve", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :approved } %>
+      <p>Pet Approved</p>
+    <% elsif pet_application.rejected? %>
+        <p>Pet Rejected</p>
+    <% elsif pet_application %>
+      <%= button_to "Approve", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :approved } %>
+      <%= button_to "Reject", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :rejected } %>
     <% end %>
   </section>
 <% end %>

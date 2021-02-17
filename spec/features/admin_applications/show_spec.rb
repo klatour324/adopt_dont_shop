@@ -60,31 +60,31 @@ RSpec.describe "Admin Application Show Page" do
     end
   end
 
-  # it "can reject a pet for adoption" do
-  #   visit "/admin/applications/#{@application.id}"
-  #
-  #   within "#pet-#{@pet_1.id}" do
-  #     expect(page).to have_content(@pet_1.name)
-  #     expect(page).to have_button("Reject")
-  #
-  #     click_button("Reject")
-  #
-  #     expect(current_path).to eq("/admin/applications/#{@application.id}")
-  #     expect(page).to_not have_button("Approve")
-  #     expect(page).to_not have_button("Rejcet")
-  #     expect(page).to have_content("Pet Rejected")
-  #   end
-  #
-  #   within "#pet-#{@pet_2.id}" do
-  #     expect(page).to have_content(@pet_2.name)
-  #     expect(page).to have_button("Reject")
-  #     click_button("Reject")
-  #
-  #
-  #     expect(current_path).to eq("/admin/applications/#{@application.id}")
-  #     expect(page).to_not have_button("Approve")
-  #     expect(page).to_not have_button("Reject")
-  #     expect(page).to have_content("Pet Rejected")
-  #   end
-  # end
+  it "can reject a pet for adoption" do
+    visit "/admin/applications/#{@application.id}"
+
+    within "#pet-#{@pet_1.id}" do
+      expect(page).to have_content(@pet_1.name)
+      expect(page).to have_button("Reject")
+
+      click_button("Reject")
+
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+      expect(page).to_not have_button("Approve")
+      expect(page).to_not have_button("Rejcet")
+      expect(page).to have_content("Pet Rejected")
+    end
+
+    within "#pet-#{@pet_2.id}" do
+      expect(page).to have_content(@pet_2.name)
+      expect(page).to have_button("Reject")
+      click_button("Reject")
+
+
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+      expect(page).to_not have_button("Approve")
+      expect(page).to_not have_button("Reject")
+      expect(page).to have_content("Pet Rejected")
+    end
+  end
 end
