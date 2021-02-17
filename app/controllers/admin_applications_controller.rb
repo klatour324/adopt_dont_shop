@@ -4,13 +4,15 @@ class AdminApplicationsController < ApplicationController
   end
 
   def update
-    application = Application.find(params[:id])
+    @application = Application.find(params[:id])
     pet_application = PetApplication.find(params[:pet_application_id])
-    pet_application.update(pet_appilcation_params)
+    pet_application.update(pet_application_params)
+
+    redirect_to "/admin/applications/#{params[:id]}"
   end
 
   private
   def pet_application_params
-    params.permit(:application_status)
+    params.permit(:status)
   end
 end
