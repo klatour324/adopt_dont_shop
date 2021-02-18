@@ -18,12 +18,7 @@
 
   <% if @application.application_status == "In Progress" %>
     <section id='<%= "application-#{@application.id}" %>'>
-      <h3>Add a Pet to this Application</h3>
-      <%= form_with url: "/applications/#{@application.id}", method: :get, local: :true do |form| %>
-        <%= form.label :pet_name %>
-        <%= form.text_field :pet_name %>
-        <%= form.submit "Search" %>
-      <% end %>
+      <%= render partial: "search_for_pets" %>
     </section>
 
     <% if @searched_pets %>
@@ -37,13 +32,7 @@
 
   <% if @application.pets.length > 0 && @application.application_status == "In Progress" %>
     <section id='submit'>
-      <h3>Why I would make a good owner for these pet(s):</h3>
-      <%= form_with url:"/applications/#{@application.id}", method: :patch, local: true do |form| %>
-        <%= form.label :case_for_adoption %>
-        <%= form.text_area :case_for_adoption %>
-        <%= form.hidden_field :application_status, value: :pending  %>
-        <%= form.submit "Submit" %>
-      <% end %>
+      <%= render partial: "submit_application" %>
     </section>
   <% end %>
 </div>

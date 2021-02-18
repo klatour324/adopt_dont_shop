@@ -1,21 +1,4 @@
 <h2>New Application</h2>
-
-<%= form_with url: "/applications", method: :post, local: :true do |form| %>
-  <section class="new_application">
-  <%= form.label :first_name %>
-  <%= form.text_field :first_name %><br>
-  <%= form.label :last_name %>
-  <%= form.text_field :last_name %><br>
-  <%= form.label :address %>
-  <%= form.text_area :address %><br>
-  <%= form.label :city %>
-  <%= form.text_field :city %><br>
-  <%= form.label :state %>
-  <%= form.text_field :state %><br>
-  <%= form.label :zip %>
-  <%= form.text_field :zip %><br>
-  <%= form.label :case_for_adoption %>
-  <%= form.text_area :case_for_adoption %><br>
-  <%= form.submit "Submit" %>
-  </section>
-<% end %>
+<section class="new_application">
+  <%= render partial: "new_application" %>
+</section>
