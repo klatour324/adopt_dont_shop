@@ -91,8 +91,8 @@ RSpec.describe "Admin Application Show Page" do
     within "#pet-#{@pet_2.id}" do
       expect(page).to have_content(@pet_2.name)
       expect(page).to have_button("Reject")
-      click_button("Reject")
 
+      click_button("Reject")
 
       expect(current_path).to eq("/admin/applications/#{@application.id}")
       expect(page).to_not have_button("Approve")
@@ -102,16 +102,12 @@ RSpec.describe "Admin Application Show Page" do
   end
 
   it "can approve/reject pets on one application without affecting other applications" do
-    # When there are two applications in the system for the same pet
-
-    # When I visit the admin application show page for one of the applications
     visit "/admin/applications/#{@application.id}"
 
     within("#pet-#{@pet_1.id}") do
       expect(page).to have_content("#{@pet_1.name}")
       expect(page).to have_button("Approve")
 
-      # And I approve or reject the pet for that application
       click_button("Approve")
 
       expect(page).to have_content("Pet Approved")
@@ -119,11 +115,8 @@ RSpec.describe "Admin Application Show Page" do
       expect(page).to_not have_content("Pet Rejected")
     end
 
-    # When I visit the other application's admin show page
     visit "/admin/applications/#{@application_2.id}"
 
-      # Then I do not see that the pet has been accepted or rejected for that application
-      # And instead I see buttons to approve or reject the pet for this specific application
     within("#pet-#{@pet_1.id}") do
       expect(page).to have_content("#{@pet_1.name}")
       expect(page).to_not have_content("Pet Approved")
