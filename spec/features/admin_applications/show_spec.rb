@@ -103,4 +103,32 @@ RSpec.describe "Admin Application Show Page" do
     expect(current_path).to eq("/admin/applications/#{@application.id}")
     expect(page).to have_content("Approved")
   end
+
+  it "can reject one or more pets on an application" do
+    visit "/admin/applications/#{@application.id}"
+
+    within("#pet-#{@pet_1.id}") do
+      expect(page).to have_content("#{@pet_1.name}")
+      expect(page).to have_button("Reject")
+      expect(page).to have_button("Approve")
+
+      click_button("Reject", match: :first)
+
+      expect(page).to have_content("Pet Rejected")
+    end
+
+    within("#pet-#{@pet_2.id}") do
+      expect(page).to have_content("#{@pet_2.name}")
+      expect(page).to have_button("Reject")
+      expect(page).to have_button("Approve")
+
+      click_button("Approve", match: :first)
+
+      expect(page).to have_content("#{@pet_2.name}")
+      expect(page).to have_content("Pet Approved")
+    end
+
+    expect(current_path).to eq("/admin/applications/#{@application.id}")
+    expect(page).to have_content("Rejected")
+  end
 end
