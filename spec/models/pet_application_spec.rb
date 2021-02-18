@@ -59,11 +59,11 @@ RSpec.describe PetApplication, type: :model do
     expect(@pet_application.rejected?).to eq(false)
   end
 
-  # it "can have a rejected status" do
-  #   pet_application = create(:pet_application, application_id: 1, pet_id: 1, status: :rejected )
-  #
-  #   expect(pet_application.status).to eq("rejected")
-  #   expect(pet_application.approved?).to eq(false)
-  #   expect(pet_application.rejected?).to eq(true)
-  # end
+  it "can have a rejected status" do
+    @pet_application = create(:pet_application, application_id: 1, pet_id: 1, status: :rejected )
+
+    expect(@pet_application.status).to eq("rejected")
+    expect(@pet_application.approved?).to eq(false)
+    expect(@pet_application.rejected?).to eq(true)
+  end
 end
