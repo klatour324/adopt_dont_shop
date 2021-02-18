@@ -27,6 +27,19 @@ RSpec.describe "Admin Application Show Page" do
     @application = create(:application)
     @application.pets << [@pet_1, @pet_2]
 
+    @application_2 = create(:application)
+    @application_2.pets << [@pet_1]
+
+    # @application_1 = create(:application)
+    # @application_1.pets << [@pet_1]
+    #
+    # @application_2 = create(:application)
+    # @application_2.pets << [@pet_2]
+
+    # @pet_applications_1 = create(:pet_application, application_id: 1, pet_id: 1)
+    # @pet_applications_2 = create(:pet_application, application_id: 1, pet_id: 2)
+
+
     # @shelter_1 = create(:shelter, id: 1)
     # @pet_1 = create(:pet, id: 1, shelter_id: 1, name: "Nikita")
     # @pet_2 = create(:pet, id: 2, shelter_id: 1, name: "Kiko")
@@ -85,6 +98,38 @@ RSpec.describe "Admin Application Show Page" do
       expect(page).to_not have_button("Approve")
       expect(page).to_not have_button("Reject")
       expect(page).to have_content("Pet Rejected")
+    end
+  end
+
+  it "can approve/reject pets on one application without affecting other applications" do
+    # When there are two applications in the system for the same pet
+
+    # When I visit the admin application show page for one of the applications
+    visit "/admin/applications/#{@application.id}"
+
+    within("#pet-#{@pet_1.id}") do
+      expect(page).to have_content("#{@pet_1.name}")
+      expect(page).to have_button("Approve")
+
+      # And I approve or reject the pet for that application
+      click_button("Approve")
+
+      expect(page).to have_content("Pet Approved")
+      expect(page).to_not have_button("Reject")
+      expect(page).to_not have_content("Pet Rejected")
+    end
+
+    # When I visit the other application's admin show page
+    visit "/admin/applications/#{@application_2.id}"
+
+      # Then I do not see that the pet has been accepted or rejected for that application
+      # And instead I see buttons to approve or reject the pet for this specific application
+    within("#pet-#{@pet_1.id}") do
+      expect(page).to have_content("#{@pet_1.name}")
+      expect(page).to_not have_content("Pet Approved")
+      expect(page).to_not have_content("Pet Rejected")
+      expect(page).to have_button("Approve")
+      expect(page).to have_button("Reject")
     end
   end
 end
