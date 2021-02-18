@@ -4,16 +4,16 @@ class AdminApplicationsController < ApplicationController
   end
 
   def update
-    @application = Application.find(params[:id])
     pet_application = PetApplication.find(params[:pet_application_id])
     pet_application.update(pet_application_params)
 
-    if @application.pet_applications.all? == "Approved"
-      @application.update(application_status: "Approved")
+    if params[:status].downcase == "approved"
+      pet_application.application.update(application_status: "Approved")
+      pet_application.pet.update(adoptable: false)
     else
-      @application.update(application_status: "Rejected")
+      pet_application.application.update(application_status: "Rejected")
     end
-    @application.save
+
     redirect_to "/admin/applications/#{params[:id]}"
   end
 

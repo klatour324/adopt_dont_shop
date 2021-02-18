@@ -12,16 +12,18 @@ class Pet < ApplicationRecord
   enum sex: [:female, :male]
 
   def self.pet_name(input)
-    where("name LIKE?", "%#{input[:pet_name]}%")
+    where("name ILIKE?", "%#{input[:pet_name]}%")
   end
 
   def self.find_by_name(name)
     where("lower(name) like ?", "%#{name.downcase}%")
   end
 
-  def adoptable?
-    return true if applications.where(application_status: "Approved").count >= 1
-
-    self.update(adoptable: false)
+  def adoption_status
+    if adoptable == false
+      "No Longer Adoptable"
+    else
+      "Adoptable"
+    end
   end
 end

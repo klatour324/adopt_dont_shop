@@ -10,11 +10,6 @@ class PetsController < ApplicationController
 
   def edit
     @pet = Pet.find(params[:id])
-    if params[:application_id]
-      @pet.update_status
-
-      redirect_to "/admin/applications/#{params[:application_id]}"
-    end
   end
 
   def update

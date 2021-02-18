@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Admin Application Show Page" do
   before :each do
     @pet_1 = create(:pet)
-    @pet_2 = create(:pet)
+    @pet_2 = create(:pet, name: "Bella")
     @pet_3 = create(:pet, name: "Kiko")
 
     @application = create(:application)
@@ -130,5 +130,29 @@ RSpec.describe "Admin Application Show Page" do
 
     expect(current_path).to eq("/admin/applications/#{@application.id}")
     expect(page).to have_content("Rejected")
+  end
+
+  it "can make pets unadoptable once application is approved" do
+    visit "/admin/applications/#{@application.id}"
+
+
+    within("#pet-#{@pet_1.id}") do
+      expect(page).to have_button("Approve")
+
+      click_button("Approve", match: :first)
+    end
+
+    visit "/pets/#{@pet_1.id}"
+
+    expect(page).to have_content("No Longer Adoptable")
+
+    visit "/admin/applications/#{@application.id}"
+
+    within("#pet-#{@pet_2.id}") do
+      expect(page).to have_button("Approve")
+      click_button("Approve", match: :first)
+    end
+    visit "/pets/#{@pet_2.id}"
+    expect(page).to have_content("No Longer Adoptable")
   end
 end
