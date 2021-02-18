@@ -131,4 +131,37 @@ RSpec.describe "Admin Application Show Page" do
     expect(current_path).to eq("/admin/applications/#{@application.id}")
     expect(page).to have_content("Rejected")
   end
+
+  it "can make pets unadoptable once application is approved" do
+    # When I visit an admin application show page
+    visit "/admin/applications/#{@application.id}"
+
+
+    # And I approve all pets on the application
+    within("#pet-#{@pet_1.id}") do
+      expect(page).to have_button("Approve")
+
+      click_button("Approve", match: :first)
+    end
+
+      visit "/pets/#{@pet_1.id}"
+
+      expect(page).to have_content("No Longer Adoptable")
+
+    within("#pet-#{@pet_2.id}") do
+      expect(page).to have_button("Approve")
+
+      click_button("Approve", match: :first)
+    end
+    visit "/pets/#{@pet_2.id}"
+    expect(page).to have_content("No Longer Adoptable")
+
+    # And when I visit the show pages for those pets
+    # Then I see that those pets are no longer "adoptable"
+
+
+
+    # expect(@application.pets.all?.adoptable?).to eq(false)
+    # expect(@application.pets.last.adoptable?).to eq(false)
+  end
 end
