@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Admin Application Show Page" do
   before :each do
     @pet_1 = create(:pet)
-    @pet_2 = create(:pet)
+    @pet_2 = create(:pet, name: "Bella")
     @pet_3 = create(:pet, name: "Kiko")
 
     @application = create(:application)
@@ -133,35 +133,26 @@ RSpec.describe "Admin Application Show Page" do
   end
 
   it "can make pets unadoptable once application is approved" do
-    # When I visit an admin application show page
     visit "/admin/applications/#{@application.id}"
 
 
-    # And I approve all pets on the application
     within("#pet-#{@pet_1.id}") do
       expect(page).to have_button("Approve")
 
       click_button("Approve", match: :first)
     end
 
-      visit "/pets/#{@pet_1.id}"
+    visit "/pets/#{@pet_1.id}"
 
-      expect(page).to have_content("No Longer Adoptable")
+    expect(page).to have_content("No Longer Adoptable")
+
+    visit "/admin/applications/#{@application.id}"
 
     within("#pet-#{@pet_2.id}") do
       expect(page).to have_button("Approve")
-
       click_button("Approve", match: :first)
     end
     visit "/pets/#{@pet_2.id}"
     expect(page).to have_content("No Longer Adoptable")
-
-    # And when I visit the show pages for those pets
-    # Then I see that those pets are no longer "adoptable"
-
-
-
-    # expect(@application.pets.all?.adoptable?).to eq(false)
-    # expect(@application.pets.last.adoptable?).to eq(false)
   end
 end
