@@ -29,23 +29,6 @@ RSpec.describe "Admin Application Show Page" do
 
     @application_2 = create(:application)
     @application_2.pets << [@pet_1]
-
-    # @application_1 = create(:application)
-    # @application_1.pets << [@pet_1]
-    #
-    # @application_2 = create(:application)
-    # @application_2.pets << [@pet_2]
-
-    # @pet_applications_1 = create(:pet_application, application_id: 1, pet_id: 1)
-    # @pet_applications_2 = create(:pet_application, application_id: 1, pet_id: 2)
-
-
-    # @shelter_1 = create(:shelter, id: 1)
-    # @pet_1 = create(:pet, id: 1, shelter_id: 1, name: "Nikita")
-    # @pet_2 = create(:pet, id: 2, shelter_id: 1, name: "Kiko")
-    # @application = create(:application, id: 1, application_status: "Pending")
-    # @pet_application_1 = create(:pet_application, application_id: 1, pet_id: 1 )
-    # @pet_application_2 = create(:pet_application, application_id: 1, pet_id: 2 )
   end
 
   it "can approve a pet for adoption" do
