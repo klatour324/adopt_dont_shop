@@ -12,7 +12,7 @@ class Pet < ApplicationRecord
   enum sex: [:female, :male]
 
   def self.pet_name(input)
-    where("name LIKE?", "%#{input[:pet_name]}%")
+    where("name ILIKE?", "%#{input[:pet_name]}%")
   end
 
   def self.find_by_name(name)
@@ -22,6 +22,6 @@ class Pet < ApplicationRecord
   def adoptable?
     return true if applications.where(application_status: "Approved").count >= 1
 
-    self.update(adoptable: false)
+    self.update!(adoptable: false)
   end
 end
