@@ -2,28 +2,10 @@ require "rails_helper"
 
 RSpec.describe "Admin Application Show Page" do
   before :each do
-    PetApplication.destroy_all
-    Pet.destroy_all
-    Shelter.destroy_all
-    Application.destroy_all
+    @pet_1 = create(:pet)
+    @pet_2 = create(:pet)
+    @pet_3 = create(:pet, name: "Kiko")
 
-    @shelter = create(:shelter)
-    @pet_1 = @shelter.pets.create!(name: 'Kiko',
-                                 approximate_age: 10,
-                                 description: "Happy pup",
-                                 sex: 1)
-    @pet_2 = @shelter.pets.create!(name: 'Nikita',
-                                 approximate_age: 2,
-                                 description: "Very happy pup",
-                                 sex: 0)
-    @pet_3 = @shelter.pets.create!(name: 'Kasha',
-                                 approximate_age: 4,
-                                 description: "Very happy pup",
-                                 sex: 0)
-    @pet_4 = @shelter.pets.create!(name: 'Bella',
-                                 approximate_age: 5,
-                                 description: "Very happy pup",
-                                 sex: 0)
     @application = create(:application)
     @application.pets << [@pet_1, @pet_2]
 
@@ -107,5 +89,18 @@ RSpec.describe "Admin Application Show Page" do
       expect(page).to have_button("Approve")
       expect(page).to have_button("Reject")
     end
+  end
+
+  it "can approve all the pets on an application" do
+    visit "/admin/applications/#{@application.id}"
+
+    expect(page).to have_content("#{@pet_1.name}")
+    expect(page).to have_content("#{@pet_2.name}")
+    expect(page).to have_button("Approve")
+
+    click_button("Approve", match: :first)
+
+    expect(current_path).to eq("/admin/applications/#{@application.id}")
+    expect(page).to have_content("Approved")
   end
 end
