@@ -26,4 +26,10 @@ class Pet < ApplicationRecord
       "Adoptable"
     end
   end
+  
+  def application_already_approved?
+    applications.any? do |application|
+      application.application_status == "Approved"
+    end
+  end
 end

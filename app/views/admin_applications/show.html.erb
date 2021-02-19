@@ -12,9 +12,13 @@
       <p>Pet Approved</p>
     <% elsif pet_application.rejected? %>
         <p>Pet Rejected</p>
-    <% elsif pet_application %>
-      <%= button_to "Approve", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :approved } %>
-      <%= button_to "Reject", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :rejected } %>
+    <% else %>
+        <% if pet_application.pet.application_already_approved? %>
+          <p>Pet already approved for adoption</p>
+        <% else %>
+        <%= button_to "Approve", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :approved } %>
+        <% end %>
+        <%= button_to "Reject", "/admin/applications/#{@application.id}", method: :patch, params: { pet_application_id: pet_application.id, status: :rejected } %>
     <% end %>
   </section>
 <% end %>

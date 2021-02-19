@@ -9,7 +9,7 @@ RSpec.describe "Admin Application Show Page" do
     @application = create(:application)
     @application.pets << [@pet_1, @pet_2]
 
-    @application_2 = create(:application)
+    @application_2 = create(:application, application_status: "Pending")
     @application_2.pets << [@pet_1]
   end
 
@@ -27,15 +27,9 @@ RSpec.describe "Admin Application Show Page" do
       expect(page).to have_content("Pet Approved")
     end
 
-    within "#pet-#{@pet_2.id}" do
-      expect(page).to have_content(@pet_2.name)
-      expect(page).to have_button("Approve")
-      click_button("Approve")
-
-      expect(current_path).to eq("/admin/applications/#{@application.id}")
-      expect(page).to_not have_button("Approve")
-      expect(page).to have_content("Pet Approved")
-    end
+    expect(current_path).to eq("/admin/applications/#{@application.id}")
+    expect(page).to_not have_button("Approve")
+    expect(page).to have_content("Pet Approved")
   end
 
   it "can reject a pet for adoption" do
@@ -82,13 +76,10 @@ RSpec.describe "Admin Application Show Page" do
 
     visit "/admin/applications/#{@application_2.id}"
 
-    within("#pet-#{@pet_1.id}") do
-      expect(page).to have_content("#{@pet_1.name}")
-      expect(page).to_not have_content("Pet Approved")
-      expect(page).to_not have_content("Pet Rejected")
-      expect(page).to have_button("Approve")
-      expect(page).to have_button("Reject")
-    end
+    expect(page).to have_content("#{@pet_1.name}")
+    expect(page).to_not have_content("Pet Approved")
+    expect(page).to_not have_content("Pet Rejected")
+    expect(page).to have_button("Reject")
   end
 
   it "can approve all the pets on an application" do
@@ -147,12 +138,20 @@ RSpec.describe "Admin Application Show Page" do
     expect(page).to have_content("No Longer Adoptable")
 
     visit "/admin/applications/#{@application.id}"
+  end
 
-    within("#pet-#{@pet_2.id}") do
-      expect(page).to have_button("Approve")
-      click_button("Approve", match: :first)
+  it "can only have one approved and pending application on them at any time" do
+    visit "/admin/applications/#{@application.id}"
+
+    within("#pet-#{@pet_1.id}") do
+      click_button("Approve")
     end
-    visit "/pets/#{@pet_2.id}"
-    expect(page).to have_content("No Longer Adoptable")
+
+    visit "/admin/applications/#{@application_2.id}"
+
+    within("#pet-#{@pet_1.id}") do
+      expect(page).to have_content("Pet already approved for adoption")
+      expect(page).to have_button("Reject")
+    end
   end
 end
