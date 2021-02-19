@@ -4,5 +4,5 @@ class PetApplication < ApplicationRecord
 
   validates_presence_of :pet_id, :application_id
 
-  enum status: [:approved, :rejected, :pending]
+  enum status: [:approved, :rejected]
 end
